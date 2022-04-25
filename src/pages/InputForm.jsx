@@ -48,7 +48,7 @@ const InputForm = (props) => {
     // console.log("🚀 ~ file: InputForm.jsx ~ line 102 ~ fetchData ~ responseData", responseData)
     editHandler(responseData);
   };
- 
+
   const submitHandler = (event) => {
     for (const load in inputValues) {
       const key = load;
@@ -65,18 +65,17 @@ const InputForm = (props) => {
         return;
       }
     }
-   
+
     if (utilities.hasNoError(inputValues)) {
       fetch(actions.url, {
         method: actions.method,
         body: JSON.stringify(loadInput),
       }).then(() => {
-          cancelClearHandler();
-          setloadInput({});
-          history.push("/showData");
-        });
+        cancelClearHandler();
+        setloadInput({});
+        history.push("/showData");
+      });
     }
-
   };
 
   const cancelHandler = (event) => {

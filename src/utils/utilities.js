@@ -25,19 +25,24 @@ export const getInputs = (inputs) =>{
       dateOfBirth: inputs.dateOfBirth.value,
     }
 }
-export const getURL = (id) => `https://form-inputs-8f8ee-default-rtdb.firebaseio.com/inputs/${id}.json`;
+export const getSpecificFirebaseURL = (id) => `https://form-inputs-8f8ee-default-rtdb.firebaseio.com/inputs/${id}.json`;
 
 export const getAction = (inputId) => {
     if(inputId  !== null) {
         return { 
-            url: getURL(inputId),
-            method:'PUT' ,
-            value:'Update'} 
+            url: getSpecificFirebaseURL(inputId),
+            method:constants.putMethod ,
+            value:constants.update }
     }
-    else{
-        return { 
-            url: constants.postURL ,
-            method:'POST',
-            value:'Add'} 
-    }
+return { 
+    url: constants.firebaseInputURL ,
+    method:constants.postMethod,
+    value:constants.add }
+}
+
+export const getPayload = (value,error) => {
+    return {
+        value: value,
+        error: error,
+      };
 }

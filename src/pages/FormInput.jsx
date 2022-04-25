@@ -1,18 +1,8 @@
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import TextareaAutosize from "@mui/base/TextareaAutosize";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
-import ShowAlert from "../components/built_in/ShowAlert ";
-import classes from "./InputForm.module.css";
 import * as constants from "../utils/constants";
 import * as utilities from "../utils/utilities";
+import * as MUI from "@mui/material";
+import ShowAlert from "../components/built_in/ShowAlert ";
+import classes from "./InputForm.module.css";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { inputActions } from "../store/inputSlice";
@@ -21,21 +11,24 @@ import { useDispatch, useSelector } from "react-redux";
 const defaultInput = constants.defaultInput;
 
 const InputForm = (props) => {
-  const {inputId} = props;
+  const { inputId } = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const input = useSelector((state) => state);
   const actions = utilities.getAction(inputId);
 
   useEffect(() => {
-    inputId !== null ? fetchData() : dispatch(inputActions.inputClear(defaultInput));
-
+    inputId !== null
+      ? fetchData()
+      : dispatch(inputActions.inputClear(defaultInput));
   }, [props]);
 
   const fetchData = async () => {
-    const response = await fetch(utilities.getURL(inputId));
-      const responseData = await response.json();
+    const response = await fetch(utilities.getSpecificFirebaseURL(inputId));
+    const responseData = await response.json().then((responseData)=>{
       dispatch(inputActions.inputEdit(responseData));
+    });
+    
   };
 
   const submitHandler = (event) => {
@@ -56,7 +49,7 @@ const InputForm = (props) => {
         method: actions.method,
         body: JSON.stringify(utilities.getInputs(input)),
       }).then(() => {
-        dispatch(inputActions.inputClear(constants.defaultInput));
+        dispatch(inputActions.inputClear(defaultInput));
         history.push("/showData");
       });
     }
@@ -126,7 +119,7 @@ const InputForm = (props) => {
   return (
     <div>
       <div className={classes.eachInput}>
-        <TextField
+        <MUI.TextField
           id="name"
           label="Name"
           value={input.name.value}
@@ -136,7 +129,7 @@ const InputForm = (props) => {
       </div>
 
       <div className={classes.eachInput}>
-        <TextField
+        <MUI.TextField
           id="email"
           label="Email"
           value={input.email.value}
@@ -148,7 +141,7 @@ const InputForm = (props) => {
       </div>
 
       <div className={classes.eachInput}>
-        <TextareaAutosize
+        <MUI.TextareaAutosize
           id="address"
           placeholder="Address"
           aria-label="minimum height"
@@ -163,8 +156,8 @@ const InputForm = (props) => {
       </div>
 
       <div className={classes.eachInput}>
-        <InputLabel id="blood-group">Blood Group</InputLabel>
-        <Select
+        <MUI.InputLabel id="blood-group">Blood Group</MUI.InputLabel>
+        <MUI.Select
           id="blood-group"
           label="Blood Group"
           sx={{ m: 1, minWidth: 220 }}
@@ -173,19 +166,19 @@ const InputForm = (props) => {
           onChange={bloodChangeHandler}
         >
           {constants.listOfBloods.map((bloodGroup) => (
-            <MenuItem key={bloodGroup} value={bloodGroup}>
+            <MUI.MenuItem key={bloodGroup} value={bloodGroup}>
               {bloodGroup}
-            </MenuItem>
+            </MUI.MenuItem>
           ))}
-        </Select>
+        </MUI.Select>
         {input.blood.error && (
           <ShowAlert>Please select your blood Group</ShowAlert>
         )}
       </div>
 
       <div className={classes.eachInput}>
-        <FormLabel id="gender">Gender</FormLabel>
-        <RadioGroup
+        <MUI.FormLabel id="gender">Gender</MUI.FormLabel>
+        <MUI.RadioGroup
           row
           name="gender"
           aria-labelledby="gender"
@@ -193,20 +186,20 @@ const InputForm = (props) => {
           onChange={genderChangeHandler}
         >
           {constants.listOfGenders.map((gender) => (
-            <FormControlLabel
+            <MUI.FormControlLabel
               key={gender}
               value={gender}
-              control={<Radio />}
+              control={<MUI.Radio />}
               label={gender}
             />
           ))}
-        </RadioGroup>
+        </MUI.RadioGroup>
         {input.gender.error && <ShowAlert>Please select your Gender</ShowAlert>}
       </div>
 
       <div className={classes.eachInput}>
-        <InputLabel id="exam-center">Exam Center</InputLabel>
-        <Select
+        <MUI.InputLabel id="exam-center">Exam Center</MUI.InputLabel>
+        <MUI.Select
           id="exam-center"
           labelId="exam-center"
           sx={{ m: 1, minWidth: 220 }}
@@ -215,18 +208,18 @@ const InputForm = (props) => {
           onChange={centerChangeHandler}
         >
           {constants.listOfCenters.map((centerName) => (
-            <MenuItem key={centerName} value={centerName}>
+            <MUI.MenuItem key={centerName} value={centerName}>
               {centerName}
-            </MenuItem>
+            </MUI.MenuItem>
           ))}
-        </Select>
+        </MUI.Select>
         {input.center.error && (
           <ShowAlert>Please select only 2 centers</ShowAlert>
         )}
       </div>
 
       <div className={classes.eachInput}>
-        <TextField
+        <MUI.TextField
           id="expierence"
           label="Expierence (No of years)"
           type="number"
@@ -239,8 +232,8 @@ const InputForm = (props) => {
       </div>
 
       <div className={classes.eachInput}>
-        <FormLabel id="dateOfBirth">Date of Birth </FormLabel>
-        <TextField
+        <MUI.FormLabel id="dateOfBirth">Date of Birth </MUI.FormLabel>
+        <MUI.TextField
           id="dateOfBirth"
           type="date"
           sx={{ width: 220 }}
@@ -248,18 +241,18 @@ const InputForm = (props) => {
           onChange={dateOfBirthChangeHandler}
         />
         {input.dateOfBirth.error && (
-          <ShowAlert sc>Birth of Year must be before 2022</ShowAlert>
+          <ShowAlert >Birth Year must be before 2022</ShowAlert>
         )}
       </div>
 
-      <Stack direction="row" spacing={2}>
-        <Button variant="outlined" onClick={cancelHandler}>
+      <MUI.Stack direction="row" spacing={2}>
+        <MUI.Button variant="outlined" onClick={cancelHandler}>
           Cancel
-        </Button>
-        <Button variant="contained" onClick={submitHandler}>
-          {actions.value}{" "}
-        </Button>
-      </Stack>
+        </MUI.Button>
+        <MUI.Button variant="contained" onClick={submitHandler}>
+          {actions.value}
+        </MUI.Button>
+      </MUI.Stack>
     </div>
   );
 };

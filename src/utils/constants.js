@@ -11,4 +11,8 @@ export const defaultInput = {
     expierence: {value: 0, error:false},
     dateOfBirth: {value: '', error:false}
 };
-export const postURL = `https://form-inputs-8f8ee-default-rtdb.firebaseio.com/inputs.json`;
+export const firebaseInputURL = `https://form-inputs-8f8ee-default-rtdb.firebaseio.com/inputs.json`;
+export const putMethod = 'PUT';
+export const postMethod = 'POST';
+export const update = 'Update';
+export const add = 'Add';
