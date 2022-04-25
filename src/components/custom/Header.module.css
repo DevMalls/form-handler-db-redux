@@ -1,0 +1,32 @@
+.header {
+    width: 100%;
+    height: 70px;
+    background-color: #24b679;    
+  }
+  .header nav {
+    height: 100%;
+  }
+  .header ul {
+    height: 100%;
+    list-style: none;
+    display: flex;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .header li {
+    margin: 50px;
+    width:auto;
+  }
+  
+  .header a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .header a:hover,
+  .header a:active {
+    color: #00040a;
+    border-bottom: 4px solid #00040a;
+  }
